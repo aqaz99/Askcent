@@ -32,7 +32,7 @@ class askcentDrawer extends StatelessWidget {
             },
           ),
           ListTile(
-            title: const Text('Further Page'),
+            title: const Text('Play Askcent'),
             // onTap: () {
             //   var route = ModalRoute.of(context);
             //   Navigator.of(context)
@@ -40,7 +40,7 @@ class askcentDrawer extends StatelessWidget {
             // },
           ),
           ListTile(
-            title: const Text('Other Page'),
+            title: const Text('Previous Games'),
             // onTap: () {
             //   var route = ModalRoute.of(context);
             //   Navigator.of(context)
@@ -48,20 +48,25 @@ class askcentDrawer extends StatelessWidget {
             // },
           ),
           ListTile(
-            title: const Text('Test Page'),
+            title: const Text('Upload An Entry'),
             // onTap: () {
             //   var route = ModalRoute.of(context);
             //   Navigator.of(context).push(
             //       MaterialPageRoute(builder: (context) => LocationPage()));
             // },
           ),
+          Divider(),
           ListTile(
-            title: const Text('Hello Page'),
+            title: const Text('Settings'),
             // onTap: () {
             //   var route = ModalRoute.of(context);
             //   Navigator.of(context)
             //       .push(MaterialPageRoute(builder: (context) => MapPage()));
             // },
+          ),
+          ListTile(
+            title: const Text('Send Feeback'),
+            onTap: () {},
           ),
         ],
       ),
