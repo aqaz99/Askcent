@@ -50,8 +50,11 @@ class GameScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       title: 'Flutter Google Maps Demo',
+      theme: ThemeData(
+        primarySwatch: Colors.green,
+      ),
       home: MapSample(),
       debugShowCheckedModeBanner: false,
     );
@@ -83,7 +86,13 @@ class GameScreenState extends State<MapSample> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Play Askcent!')),
+      appBar: AppBar(
+        title: const Text(
+          'Play Askcent!',
+          style: const TextStyle(color: Colors.black),
+        ),
+        iconTheme: const IconThemeData(color: Colors.black),
+      ),
       drawer: const AskcentDrawer(),
       body: GoogleMap(
         mapType: MapType.hybrid,

@@ -23,7 +23,7 @@ class AskcentDrawer extends StatelessWidget {
         children: [
           const DrawerHeader(
             decoration: BoxDecoration(
-              color: Color.fromARGB(255, 186, 50, 228),
+              color: Colors.green,
             ),
             child: Text('Screens'),
           ),
