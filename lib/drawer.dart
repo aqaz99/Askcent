@@ -59,7 +59,9 @@ class AskcentDrawer extends StatelessWidget {
                   builder: (context) => const UploadEntryScreen()));
             },
           ),
-          const Divider(),
+          const Divider(
+            color: Colors.black,
+          ),
           ListTile(
             title: const Text('Leaderboards'),
             onTap: () {
