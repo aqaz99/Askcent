@@ -1,12 +1,16 @@
 // import 'package:assignment4/map_page.dart';
+import 'package:askcent/settings.dart';
 import 'package:flutter/material.dart';
-// import 'package:assignment4/location.dart';
-// import 'package:assignment4/add_topics.dart';
-// import 'package:assignment4/add_speakers.dart';
+import 'package:askcent/upload_entry.dart';
+import 'package:askcent/previous_games.dart';
+import 'package:askcent/game.dart';
+import 'package:askcent/leaderboard.dart';
 import 'package:askcent/main.dart';
 
 // Navigator.pop(context); // Close drawer
-class askcentDrawer extends StatelessWidget {
+class AskcentDrawer extends StatelessWidget {
+  const AskcentDrawer({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -33,40 +37,44 @@ class askcentDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('Play Askcent'),
-            // onTap: () {
-            //   var route = ModalRoute.of(context);
-            //   Navigator.of(context)
-            //       .push(MaterialPageRoute(builder: (context) => AddSpeakers()));
-            // },
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const GameScreen()));
+            },
           ),
           ListTile(
             title: const Text('Previous Games'),
-            // onTap: () {
-            //   var route = ModalRoute.of(context);
-            //   Navigator.of(context)
-            //       .push(MaterialPageRoute(builder: (context) => AddTopics()));
-            // },
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const PreviousGamesScreen()));
+            },
           ),
           ListTile(
             title: const Text('Upload An Entry'),
-            // onTap: () {
-            //   var route = ModalRoute.of(context);
-            //   Navigator.of(context).push(
-            //       MaterialPageRoute(builder: (context) => LocationPage()));
-            // },
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const UploadEntryScreen()));
+            },
           ),
-          Divider(),
+          const Divider(),
+          ListTile(
+            title: const Text('Leaderboards'),
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const LeaderboardScreen()));
+            },
+          ),
           ListTile(
             title: const Text('Settings'),
-            // onTap: () {
-            //   var route = ModalRoute.of(context);
-            //   Navigator.of(context)
-            //       .push(MaterialPageRoute(builder: (context) => MapPage()));
-            // },
-          ),
-          ListTile(
-            title: const Text('Send Feeback'),
-            onTap: () {},
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SettingsScreen()));
+            },
           ),
         ],
       ),
