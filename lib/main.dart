@@ -12,26 +12,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      title: 'Askcent',
       theme: ThemeData(
           primarySwatch: Colors.green,
           scaffoldBackgroundColor: const Color.fromARGB(255, 19, 149, 178)),
-      home: const MyHomePage(title: 'Askcent Home Page'),
+      home: const MyHomePage(title: 'Home'),
     );
   }
 }
 
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
 
   final String title;
 
@@ -42,16 +34,9 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
+    // This method is rerun every time setState is called
     return Scaffold(
         appBar: AppBar(
-          // Here we take the value from the MyHomePage object that was created by
-          // the App.build method, and use it to set our appbar title.
           title: Text(
             widget.title,
             style: const TextStyle(color: Colors.black),
@@ -61,26 +46,49 @@ class _MyHomePageState extends State<MyHomePage> {
         drawer: const AskcentDrawer(),
         body: Center(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
+            // mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              const Text(
-                "Askcent",
-                style: TextStyle(
-                    // backgroundColor: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+              // Primary & Secondary Title Text
+              Row(
+                children: <Widget>[
+                  // The long text inside this column overflows. Remove the row and column above this comment and the text wraps.
+                  Expanded(
+                    child: Column(
+                      children: const <Widget>[
+                        Text(
+                          "Askcent",
+                          style: TextStyle(
+                              // backgroundColor: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                        ),
+                        Text(
+                          "Test your skills at recognizing accents!",
+                          style: TextStyle(
+                              // backgroundColor: Colors.white,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black),
+                          textAlign: TextAlign.center,
+                        )
+                      ],
+                    ),
+                  ),
+                ],
               ),
-              const Text(
-                "Test your skills at recognizing accents!",
-                style: TextStyle(
-                    // backgroundColor: Colors.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.black),
+
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(120.0),
+                  ),
+                ],
               ),
+              // Play row
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
                   const Icon(
                     Icons.record_voice_over,
