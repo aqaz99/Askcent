@@ -68,7 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                               // backgroundColor: Colors.white,
                               fontSize: 42,
                               fontWeight: FontWeight.bold,
-                              color: Colors.black),
+                              color: Colors.white),
                         ),
                         Row(
                           children: [
@@ -82,7 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: TextStyle(
                               // backgroundColor: Colors.white,
                               fontSize: 32,
-                              color: Colors.black),
+                              color: Colors.white),
                           textAlign: TextAlign.center,
                         )
                       ],
@@ -134,6 +134,24 @@ class _MyHomePageState extends State<MyHomePage> {
                   ),
                 ],
               ),
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(18.0),
+                  ),
+                ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: const [
+                  Image(
+                    image: AssetImage("assets/images/globe_pin.png"),
+                    width: 300,
+                    fit: BoxFit.fitWidth,
+                  )
+                ],
+              )
             ],
           ),
         ));
