@@ -70,7 +70,7 @@ class MapSample extends StatefulWidget {
 
 class GameScreenState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
-
+  List<Marker> _currentMarkers = [];
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
@@ -81,6 +81,13 @@ class GameScreenState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
+    _currentMarkers.add(Marker(
+        markerId: const MarkerId("Marker 1"),
+        draggable: false,
+        onTap: () {
+          print("Tapped me");
+        },
+        position: const LatLng(37.42796133580664, -122.085749655962)));
   }
 
   @override
@@ -96,6 +103,7 @@ class GameScreenState extends State<MapSample> {
       drawer: const AskcentDrawer(),
       body: GoogleMap(
         mapType: MapType.hybrid,
+        markers: Set.from(_currentMarkers),
         initialCameraPosition: _kGooglePlex,
         onMapCreated: (GoogleMapController controller) {
           _controller.complete(controller);

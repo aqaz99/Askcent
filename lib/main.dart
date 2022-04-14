@@ -1,5 +1,6 @@
 import 'package:askcent/drawer.dart';
 import 'package:flutter/material.dart';
+import 'package:askcent/game.dart';
 
 void main() {
   runApp(const MyApp());
@@ -124,7 +125,11 @@ class _MyHomePageState extends State<MyHomePage> {
                       child: const Text('Play Askcent!',
                           style:
                               TextStyle(fontSize: 20.0, color: Colors.white)),
-                      onPressed: () {},
+                      onPressed: () {
+                        var route = ModalRoute.of(context);
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const GameScreen()));
+                      },
                     ),
                   ),
                   const Icon(
