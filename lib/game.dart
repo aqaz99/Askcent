@@ -71,6 +71,7 @@ class MapSample extends StatefulWidget {
 class GameScreenState extends State<MapSample> {
   final Completer<GoogleMapController> _controller = Completer();
   List<Marker> _currentMarkers = [];
+  late Marker _markerGuess;
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
     zoom: 14.4746,
@@ -81,12 +82,13 @@ class GameScreenState extends State<MapSample> {
   @override
   void initState() {
     super.initState();
-    _currentMarkers.add(Marker(
+    _currentMarkers.add(_markerGuess = Marker(
         markerId: const MarkerId("Marker 1"),
         draggable: false,
         onTap: () {
           print("Tapped me");
         },
+        infoWindow: InfoWindow(title: 'The title of the marker'),
         position: const LatLng(37.42796133580664, -122.085749655962)));
   }
 
@@ -102,13 +104,18 @@ class GameScreenState extends State<MapSample> {
       ),
       drawer: const AskcentDrawer(),
       body: GoogleMap(
-        mapType: MapType.hybrid,
-        markers: Set.from(_currentMarkers),
-        initialCameraPosition: _kGooglePlex,
-        onMapCreated: (GoogleMapController controller) {
-          _controller.complete(controller);
-        },
-      ),
+          mapType: MapType.hybrid,
+          markers: Set.from(_currentMarkers),
+          initialCameraPosition: _kGooglePlex,
+          onMapCreated: (GoogleMapController controller) {
+            _controller.complete(controller);
+          },
+          onTap: (latLng) {
+            setState(() {
+              print('${latLng.latitude}, ${latLng.longitude}');
+              _addMarker(latLng);
+            });
+          }),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _goToCurrentPos,
         label: const Text('To Current Location!'),
@@ -128,5 +135,20 @@ class GameScreenState extends State<MapSample> {
 
     final GoogleMapController controller = await _controller.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(_userPosition));
+  }
+
+  void _addMarker(LatLng position) {
+    print("HELLO!!!");
+    setState(() {
+      _markerGuess = Marker(
+          markerId: const MarkerId("Marker 1"),
+          draggable: false,
+          visible: true,
+          onTap: () {
+            print("Tapped me");
+          },
+          infoWindow: InfoWindow(title: 'The title of the marker'),
+          position: position);
+    });
   }
 }
