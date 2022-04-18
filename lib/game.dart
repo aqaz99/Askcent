@@ -138,17 +138,17 @@ class GameScreenState extends State<MapSample> {
   }
 
   void _addMarker(LatLng position) {
-    print("HELLO!!!");
+    print("User is making guess..");
     setState(() {
-      _markerGuess = Marker(
-          markerId: const MarkerId("Marker 1"),
+      _currentMarkers.add(Marker(
+          markerId: const MarkerId("My Guess"),
           draggable: false,
           visible: true,
           onTap: () {
             print("Tapped me");
           },
-          infoWindow: InfoWindow(title: 'The title of the marker'),
-          position: position);
+          infoWindow: InfoWindow(title: 'Your current guess', snippet: "Ahoy"),
+          position: position));
     });
   }
 }
