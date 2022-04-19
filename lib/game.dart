@@ -4,6 +4,9 @@ import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
+// Play sound
+import 'package:flutter_sound/flutter_sound.dart';
+
 /// Determine the current position of the device.
 ///
 /// When the location services are not enabled or permissions
@@ -81,6 +84,7 @@ class GameScreenState extends State<MapSample> {
   String myLocation = "";
   @override
   void initState() {
+    FlutterSound flutterSound = new FlutterSound();
     super.initState();
     _currentMarkers.add(_markerGuess = Marker(
         markerId: const MarkerId("Marker 1"),
@@ -101,6 +105,19 @@ class GameScreenState extends State<MapSample> {
           style: const TextStyle(color: Colors.black),
         ),
         iconTheme: const IconThemeData(color: Colors.black),
+        actions: [
+          TextButton(
+            style: TextButton.styleFrom(
+              padding: const EdgeInsets.all(16.0),
+              primary: Colors.white,
+              textStyle: const TextStyle(fontSize: 20),
+            ),
+            onPressed: () {
+              print("Hello from gradient");
+            },
+            child: const Text('Gradient'),
+          ),
+        ],
       ),
       drawer: const AskcentDrawer(),
       body: GoogleMap(
@@ -147,7 +164,8 @@ class GameScreenState extends State<MapSample> {
           onTap: () {
             print("Tapped me");
           },
-          infoWindow: InfoWindow(title: 'Your current guess', snippet: "Ahoy"),
+          infoWindow:
+              const InfoWindow(title: 'Your current guess', snippet: "Ahoy"),
           position: position));
     });
   }
