@@ -69,17 +69,8 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget _buildBody() {
     final GoogleSignInAccount? user = _currentUser;
     if (user != null) {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      return Row(
         children: <Widget>[
-          ListTile(
-            leading: GoogleUserCircleAvatar(
-              identity: user,
-            ),
-            title: Text(user.displayName ?? ''),
-            subtitle: Text(user.email),
-          ),
-          const Text('Signed in successfully.'),
           ElevatedButton(
             child: const Text('SIGN OUT'),
             onPressed: _handleSignOut,
@@ -87,10 +78,8 @@ class _MyHomePageState extends State<MyHomePage> {
         ],
       );
     } else {
-      return Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
+      return Row(
         children: <Widget>[
-          const Text('You are not currently signed in.'),
           ElevatedButton(
             child: const Text('SIGN IN'),
             onPressed: _handleSignIn,
@@ -105,12 +94,11 @@ class _MyHomePageState extends State<MyHomePage> {
     // This method is rerun every time setState is called
     return Scaffold(
         appBar: AppBar(
-          title: Text(
-            widget.title,
-            style: const TextStyle(color: Colors.black),
-          ),
-          iconTheme: const IconThemeData(color: Colors.black),
-        ),
+            title: Text(
+              widget.title,
+              style: const TextStyle(color: Colors.black),
+            ),
+            iconTheme: const IconThemeData(color: Colors.black)),
         drawer: const AskcentDrawer(),
         body: Center(
           child: Column(
@@ -157,6 +145,11 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ],
+              ),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [_buildBody()],
               ),
               Row(
                 children: [
@@ -223,9 +216,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     fit: BoxFit.fitWidth,
                   )
                 ],
-              ),
-              Row(
-                children: [_buildBody()],
               )
             ],
           ),
