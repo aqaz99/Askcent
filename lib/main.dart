@@ -72,9 +72,11 @@ class _MyHomePageState extends State<MyHomePage> {
       return Row(
         children: <Widget>[
           ElevatedButton(
-            child: const Text('SIGN OUT'),
-            onPressed: _handleSignOut,
-          ),
+              child: const Text('SIGN OUT'),
+              onPressed: _handleSignOut,
+              style: ElevatedButton.styleFrom(
+                primary: Colors.blue,
+              )),
         ],
       );
     } else {
@@ -83,6 +85,9 @@ class _MyHomePageState extends State<MyHomePage> {
           ElevatedButton(
             child: const Text('SIGN IN'),
             onPressed: _handleSignIn,
+            style: ElevatedButton.styleFrom(
+              primary: Colors.blue,
+            ),
           ),
         ],
       );
@@ -98,6 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
               widget.title,
               style: const TextStyle(color: Colors.black),
             ),
+            actions: [_buildBody()],
             iconTheme: const IconThemeData(color: Colors.black)),
         drawer: const AskcentDrawer(),
         body: Center(
@@ -145,11 +151,6 @@ class _MyHomePageState extends State<MyHomePage> {
                     ),
                   ),
                 ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [_buildBody()],
               ),
               Row(
                 children: [
