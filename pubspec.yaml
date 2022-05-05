@@ -38,6 +38,8 @@ dependencies:
   geolocator: ^8.2.0
   audioplayers: ^0.20.1
   google_sign_in: ^5.3.0
+  cloud_firestore: ^3.1.14
+  firebase_core: ^1.16.0
 
 dev_dependencies:
   flutter_test:

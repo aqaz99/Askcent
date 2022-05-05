@@ -3,9 +3,17 @@ import 'dart:async';
 import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:askcent/firebase_config.dart';
+
+// Add random user to database
+import "dart:math";
 
 // Play sound
 import 'package:audioplayers/audioplayers.dart';
+
+// Firestore
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 class GameScreen extends StatelessWidget {
   const GameScreen({Key? key}) : super(key: key);
@@ -30,6 +38,31 @@ class MapSample extends StatefulWidget {
 }
 
 class GameScreenState extends State<MapSample> {
+  // Firebase
+  bool _initialized = false;
+  Future<void> initializeDefault() async {
+    await Firebase.initializeApp(
+        options: DefaultFirebaseConfig.platformOptions);
+    _initialized = true;
+  }
+
+  static List<String> list_of_users = [
+    "Tom",
+    "Bob",
+    "Jess",
+    "Earl",
+    "Pat",
+    "Cat",
+    "Marge",
+    "Harry",
+    "Patrick",
+    "Jane",
+    "Teresa"
+  ];
+  // GameScreenState() {
+  //   initializeDefault();
+  // }
+
   final Completer<GoogleMapController> _controller = Completer();
   List<Marker> _currentMarkers = [];
   late Marker _markerGuess;
@@ -46,6 +79,7 @@ class GameScreenState extends State<MapSample> {
   void initState() {
     // FlutterSound flutterSound = new FlutterSound();
     super.initState();
+    initializeDefault();
   }
 
   @override
@@ -67,6 +101,12 @@ class GameScreenState extends State<MapSample> {
             ),
             onPressed: () {
               print("Hello from gradient");
+
+              final _random = new Random();
+
+              var random_user =
+                  list_of_users[_random.nextInt(list_of_users.length)];
+              writeAskcent(random_user);
             },
             child: const Text('Submit Guess!'),
           ),
@@ -114,5 +154,35 @@ class GameScreenState extends State<MapSample> {
               const InfoWindow(title: 'Your current guess', snippet: "Ahoy"),
           position: position));
     });
+  }
+
+  Future<bool> writeAskcent(String user_name) async {
+    if (!_initialized) {
+      await initializeDefault();
+    }
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    DocumentReference ref = firestore.collection('user_data').doc(user_name);
+
+    ref
+        .set({
+          'user_name': user_name,
+          'latitude': 0,
+          'longitude': 1,
+        }, SetOptions(merge: true))
+        .then((value) => print("Askcent added $user_name"))
+        .catchError((error) => print("Failed to update askcent: $error"));
+    // firestore
+    //     .collection('user_data')
+    //     .doc('askcents')
+    //     .collection('test')
+    //     .add({
+    //       'user_name': user_name,
+    //       'latitude': 0,
+    //       'longitude': 1,
+    //     })
+    //     .then((value) => print("Askcent added"))
+    //     .catchError((error) => print("Failed to update askcent: $error"));
+    return true;
   }
 }
