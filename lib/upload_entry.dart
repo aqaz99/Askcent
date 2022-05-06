@@ -149,8 +149,7 @@ class UploadScreenState extends State<MapSample> {
           onTap: () {
             print("Tapped me");
           },
-          infoWindow:
-              const InfoWindow(title: 'Your current guess', snippet: "Ahoy"),
+          infoWindow: const InfoWindow(title: 'Your ASkcent Location'),
           position: position));
     });
   }
