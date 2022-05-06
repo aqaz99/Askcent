@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:askcent/drawer.dart';
@@ -141,6 +143,7 @@ class UploadScreenState extends State<MapSample> {
   void _addMarker(LatLng position) {
     current_marker_latlong = position;
     print("User is making guess..");
+    readAskcent();
     setState(() {
       _currentMarkers.add(Marker(
           markerId: const MarkerId("My Guess"),
@@ -155,7 +158,6 @@ class UploadScreenState extends State<MapSample> {
   }
 
   Future<bool> writeAskcent(String userName) async {
-    userName = "Pat";
     if (current_marker_latlong == null) {
       return false;
     } else {
@@ -177,5 +179,23 @@ class UploadScreenState extends State<MapSample> {
           .catchError((error) => print("Failed to update askcent: $error"));
       return true;
     }
+  }
+
+  Future<bool> readAskcent() async {
+    // print(current_marker_latlong);
+    if (!_initialized) {
+      await initializeDefault();
+    }
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+
+    var collection = FirebaseFirestore.instance.collection('user_data');
+    var docSnapshot = await collection.doc('Bob').get();
+    if (docSnapshot.exists) {
+      Map<String, dynamic>? data = docSnapshot.data();
+      var value = data; // <-- The value you want to retrieve.
+      print(value);
+      // Call setState if needed.
+    }
+    return true;
   }
 }
