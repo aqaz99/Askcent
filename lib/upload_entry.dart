@@ -189,13 +189,35 @@ class UploadScreenState extends State<MapSample> {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     var collection = FirebaseFirestore.instance.collection('user_data');
-    var docSnapshot = await collection.doc('Bob').get();
-    if (docSnapshot.exists) {
-      Map<String, dynamic>? data = docSnapshot.data();
-      var value = data; // <-- The value you want to retrieve.
-      print(value);
-      // Call setState if needed.
-    }
+    var all_user_info = await getCollection(collection);
+
+    // generates a new Random object
+    final _random = new Random();
+
+    // generate a random index based on the list length
+    // and use it to retrieve the element
+    var element = all_user_info![_random.nextInt(all_user_info.length)];
+    print(element);
+
+    // var docSnapshot = await collection.doc('Bob').get();
+    // if (docSnapshot.exists) {
+    //   Map<String, dynamic>? data = docSnapshot.data();
+    //   var value = data; // <-- The value you want to retrieve.
+    //   print(value);
+    //   // Call setState if needed.
+    // }
+
     return true;
+  }
+
+  Future<List<dynamic>?> getCollection(CollectionReference collection) async {
+    try {
+      QuerySnapshot snapshot = await collection.get();
+      List<dynamic> result = snapshot.docs.map((doc) => doc.data()).toList();
+      return result;
+    } catch (error) {
+      print(error);
+      return null;
+    }
   }
 }
