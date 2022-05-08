@@ -4,6 +4,7 @@ import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:askcent/firebase_config.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // Play sound
 import 'package:audioplayers/audioplayers.dart';
@@ -14,6 +15,14 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Get random user
 import "dart:math";
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  // What we are requesting access to for the app
+  scopes: <String>[
+    'email',
+    'profile',
+  ],
+);
 
 class GameScreen extends StatelessWidget {
   const GameScreen({Key? key}) : super(key: key);
@@ -38,16 +47,18 @@ class MapSample extends StatefulWidget {
 }
 
 class GameScreenState extends State<MapSample> {
+  // Google user stuff
+  GoogleSignInAccount? _currentUser;
+
   // Firebase
   bool _initialized = false;
   late Map<String, dynamic> _randomAskcent;
-  late String _randomsUsername;
+
   Future<void> initializeDefault() async {
     await Firebase.initializeApp(
         options: DefaultFirebaseConfig.platformOptions);
     _initialized = true;
     _randomAskcent = await getRandomAskcent();
-    _randomsUsername = _randomAskcent['user_name'];
   }
 
   final Completer<GoogleMapController> _controller = Completer();
@@ -66,11 +77,17 @@ class GameScreenState extends State<MapSample> {
 
   late Future<Position> myPos;
   String myLocation = "";
+
   @override
   void initState() {
-    // FlutterSound flutterSound = new FlutterSound();
     super.initState();
     initializeDefault();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
   }
 
   @override
@@ -98,7 +115,7 @@ class GameScreenState extends State<MapSample> {
                   _currentMarkers[0].position.longitude,
                   _randomAskcent['latitude'],
                   _randomAskcent['longitude']);
-
+              addScoreToUser(_currentUser?.displayName, straightLineDistance);
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -128,7 +145,7 @@ class GameScreenState extends State<MapSample> {
           }),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _playVoice,
-        label: Text('Play $_randomsUsername\'s Askcent'),
+        label: Text('Play Users Askcent'),
         icon: const Icon(Icons.volume_up_outlined),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
@@ -196,7 +213,6 @@ class GameScreenState extends State<MapSample> {
       );
       _polylines.clear();
       _polylines.add(_newLine);
-      _randomsUsername = _randomAskcent['user_name'];
     });
     // Get random askcent
     _randomAskcent = await getRandomAskcent();
@@ -240,5 +256,23 @@ class GameScreenState extends State<MapSample> {
         cos((lat2 - lat1) * p) / 2 +
         cos(lat1 * p) * cos(lat2 * p) * (1 - cos((lon2 - lon1) * p)) / 2;
     return 12742 * asin(sqrt(a));
+  }
+
+  void addScoreToUser(String? userName, double distance) async {
+    if (!_initialized) {
+      await initializeDefault();
+    }
+    FirebaseFirestore firestore = FirebaseFirestore.instance;
+    // Simple score,
+    double score = 10000 - distance;
+    DocumentReference ref = firestore.collection('user_data').doc(userName);
+    print(ref);
+    print(userName);
+    ref
+        .update({
+          'score': score.abs(),
+        })
+        .then((value) => print("Askcent added $userName"))
+        .catchError((error) => print("Failed to update askcent: $error"));
   }
 }

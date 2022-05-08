@@ -1,11 +1,10 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:askcent/firebase_config.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 
 // Add random user to database
 import "dart:math";
@@ -16,6 +15,14 @@ import 'package:audioplayers/audioplayers.dart';
 // Firestore
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+
+GoogleSignIn _googleSignIn = GoogleSignIn(
+  // What we are requesting access to for the app
+  scopes: <String>[
+    'email',
+    'profile',
+  ],
+);
 
 class UploadEntryScreen extends StatelessWidget {
   const UploadEntryScreen({Key? key}) : super(key: key);
@@ -40,6 +47,7 @@ class MapSample extends StatefulWidget {
 }
 
 class UploadScreenState extends State<MapSample> {
+  GoogleSignInAccount? _currentUser;
   // Firebase
   bool _initialized = false;
   Future<void> initializeDefault() async {
@@ -47,20 +55,6 @@ class UploadScreenState extends State<MapSample> {
         options: DefaultFirebaseConfig.platformOptions);
     _initialized = true;
   }
-
-  static List<String> list_of_users = [
-    "Tom",
-    "Bob",
-    "Jess",
-    "Earl",
-    "Pat",
-    "Cat",
-    "Marge",
-    "Harry",
-    "Patrick",
-    "Jane",
-    "Teresa"
-  ];
 
   final Completer<GoogleMapController> _controller = Completer();
   List<Marker> _currentMarkers = [];
@@ -80,6 +74,12 @@ class UploadScreenState extends State<MapSample> {
     // FlutterSound flutterSound = new FlutterSound();
     super.initState();
     initializeDefault();
+    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
+      setState(() {
+        _currentUser = account;
+      });
+    });
+    _googleSignIn.signInSilently();
   }
 
   @override
@@ -101,12 +101,7 @@ class UploadScreenState extends State<MapSample> {
             ),
             onPressed: () {
               print("User uploaded askcent");
-
-              final _random = new Random();
-
-              var randomUser =
-                  list_of_users[_random.nextInt(list_of_users.length)];
-              writeAskcent(randomUser);
+              writeAskcent(_currentUser?.displayName);
             },
             child: const Text('Submit Askcent!'),
           ),
@@ -128,7 +123,7 @@ class UploadScreenState extends State<MapSample> {
           }),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _playVoice,
-        label: const Text('Change me please'),
+        label: const Text('Press to record your audio'),
         icon: const Icon(Icons.volume_up_outlined),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
@@ -157,7 +152,7 @@ class UploadScreenState extends State<MapSample> {
     });
   }
 
-  Future<bool> writeAskcent(String userName) async {
+  Future<bool> writeAskcent(String? userName) async {
     if (current_marker_latlong == null) {
       return false;
     } else {
@@ -174,6 +169,7 @@ class UploadScreenState extends State<MapSample> {
             'user_name': userName,
             'latitude': current_marker_latlong?.latitude,
             'longitude': current_marker_latlong?.longitude,
+            'score': 0,
           }, SetOptions(merge: true))
           .then((value) => print("Askcent added $userName"))
           .catchError((error) => print("Failed to update askcent: $error"));
