@@ -199,14 +199,6 @@ class UploadScreenState extends State<MapSample> {
     var element = all_user_info![_random.nextInt(all_user_info.length)];
     print(element);
 
-    // var docSnapshot = await collection.doc('Bob').get();
-    // if (docSnapshot.exists) {
-    //   Map<String, dynamic>? data = docSnapshot.data();
-    //   var value = data; // <-- The value you want to retrieve.
-    //   print(value);
-    //   // Call setState if needed.
-    // }
-
     return true;
   }
 

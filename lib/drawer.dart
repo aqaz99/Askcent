@@ -7,6 +7,8 @@ import 'package:askcent/game.dart';
 import 'package:askcent/leaderboard.dart';
 import 'package:askcent/main.dart';
 
+import 'package:askcent/poly.dart';
+
 // Navigator.pop(context); // Close drawer
 class AskcentDrawer extends StatelessWidget {
   const AskcentDrawer({Key? key}) : super(key: key);
@@ -33,6 +35,14 @@ class AskcentDrawer extends StatelessWidget {
               var route = ModalRoute.of(context);
               Navigator.of(context)
                   .push(MaterialPageRoute(builder: (context) => const MyApp()));
+            },
+          ),
+          ListTile(
+            title: const Text('Poly'),
+            onTap: () {
+              var route = ModalRoute.of(context);
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => MyTempApp()));
             },
           ),
           ListTile(
