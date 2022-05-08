@@ -7,8 +7,6 @@ import 'package:askcent/game.dart';
 import 'package:askcent/leaderboard.dart';
 import 'package:askcent/main.dart';
 
-import 'package:askcent/poly.dart';
-
 // Navigator.pop(context); // Close drawer
 class AskcentDrawer extends StatelessWidget {
   const AskcentDrawer({Key? key}) : super(key: key);
@@ -32,40 +30,32 @@ class AskcentDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Home'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => const MyApp()));
-            },
-          ),
-          ListTile(
-            title: const Text('Poly'),
-            onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context)
-                  .push(MaterialPageRoute(builder: (context) => MyTempApp()));
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(
+                  MaterialPageRoute(builder: (context) => const MyApp()));
             },
           ),
           ListTile(
             title: const Text('Play Askcent'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context).push(
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(
                   MaterialPageRoute(builder: (context) => const GameScreen()));
             },
           ),
           ListTile(
             title: const Text('Previous Games'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context).push(MaterialPageRoute(
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const PreviousGamesScreen()));
             },
           ),
           ListTile(
             title: const Text('Upload An Entry'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context).push(MaterialPageRoute(
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const UploadEntryScreen()));
             },
           ),
@@ -75,16 +65,16 @@ class AskcentDrawer extends StatelessWidget {
           ListTile(
             title: const Text('Leaderboards'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context).push(MaterialPageRoute(
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const LeaderboardScreen()));
             },
           ),
           ListTile(
             title: const Text('Settings'),
             onTap: () {
-              var route = ModalRoute.of(context);
-              Navigator.of(context).push(MaterialPageRoute(
+              // Navigator.of(context).popUntil((route) => route.isFirst);
+              Navigator.of(context).pushReplacement(MaterialPageRoute(
                   builder: (context) => const SettingsScreen()));
             },
           ),

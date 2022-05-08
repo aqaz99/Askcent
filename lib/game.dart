@@ -266,11 +266,13 @@ class GameScreenState extends State<MapSample> {
     // Simple score,
     double score = 10000 - distance;
     DocumentReference ref = firestore.collection('user_data').doc(userName);
+    print("ref is:");
     print(ref);
+    print("User is:");
     print(userName);
     ref
         .update({
-          'score': score.abs(),
+          'score': FieldValue.increment(score.abs().round()),
         })
         .then((value) => print("Askcent added $userName"))
         .catchError((error) => print("Failed to update askcent: $error"));
