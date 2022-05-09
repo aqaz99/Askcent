@@ -28,18 +28,10 @@ class AskcentDrawer extends StatelessWidget {
             child: Text('Screens'),
           ),
           ListTile(
-            title: const Text('Home'),
-            onTap: () {
-              // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (context) => const MyApp()));
-            },
-          ),
-          ListTile(
             title: const Text('Play Askcent'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(
+              Navigator.of(context).push(
                   MaterialPageRoute(builder: (context) => const GameScreen()));
             },
           ),
@@ -47,7 +39,7 @@ class AskcentDrawer extends StatelessWidget {
             title: const Text('Previous Games'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const PreviousGamesScreen()));
             },
           ),
@@ -55,7 +47,7 @@ class AskcentDrawer extends StatelessWidget {
             title: const Text('Upload An Entry'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const UploadEntryScreen()));
             },
           ),
@@ -66,7 +58,7 @@ class AskcentDrawer extends StatelessWidget {
             title: const Text('Leaderboards'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const LeaderboardScreen()));
             },
           ),
@@ -74,7 +66,7 @@ class AskcentDrawer extends StatelessWidget {
             title: const Text('Settings'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+              Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const SettingsScreen()));
             },
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:askcent/drawer.dart';
 
 class PreviousGamesScreen extends StatelessWidget {
   const PreviousGamesScreen({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class PreviousGamesScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      drawer: const AskcentDrawer(),
       body: const Center(
         child: Text(
           'Previous Game screen',

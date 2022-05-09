@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:askcent/drawer.dart';
 
 // Firestore
-import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class LeaderboardScreen extends StatelessWidget {
@@ -20,7 +18,6 @@ class LeaderboardScreen extends StatelessWidget {
           ),
           iconTheme: const IconThemeData(color: Colors.black),
         ),
-        drawer: const AskcentDrawer(),
         body: FutureBuilder(
             future: getCollection(),
             builder: (context, AsyncSnapshot snapshot) {

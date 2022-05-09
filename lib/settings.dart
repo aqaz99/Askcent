@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:askcent/drawer.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -16,7 +15,6 @@ class SettingsScreen extends StatelessWidget {
         ),
         iconTheme: const IconThemeData(color: Colors.black),
       ),
-      drawer: const AskcentDrawer(),
       body: const Center(
         child: Text(
           'Settings Screen',

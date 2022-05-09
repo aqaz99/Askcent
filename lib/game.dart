@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:askcent/firebase_config.dart';
@@ -128,7 +127,6 @@ class GameScreenState extends State<MapSample> {
           ),
         ],
       ),
-      drawer: const AskcentDrawer(),
       body: GoogleMap(
           polylines: _polylines,
           mapType: MapType.hybrid,
@@ -157,7 +155,7 @@ class GameScreenState extends State<MapSample> {
     player.play('sounds/tts_output.wav');
   }
 
-  void _addMarker(LatLng position, String markerId) {
+  void _addMarker(LatLng position, String markerId) async {
     print("User is making guess.. ");
     double descriptorHue = 35;
 
@@ -166,7 +164,12 @@ class GameScreenState extends State<MapSample> {
       descriptorHue = 0;
       _currentMarkers.clear();
     }
+
     setState(() {
+      // if the user isn't logged in? Sign in
+      if (_currentUser == null) {
+        print("--- Current user is not signed in. ---");
+      }
       if (_currentMarkers.length > 1) {
         _currentMarkers.removeAt(1);
       }

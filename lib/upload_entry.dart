@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
-import 'package:askcent/drawer.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:askcent/firebase_config.dart';
@@ -107,7 +106,6 @@ class UploadScreenState extends State<MapSample> {
           ),
         ],
       ),
-      drawer: const AskcentDrawer(),
       body: GoogleMap(
           mapType: MapType.hybrid,
           markers: Set.from(_currentMarkers),
@@ -137,17 +135,16 @@ class UploadScreenState extends State<MapSample> {
 
   void _addMarker(LatLng position) {
     current_marker_latlong = position;
-    print("User is making guess..");
-    readAskcent();
+    // readAskcent();
     setState(() {
       _currentMarkers.add(Marker(
-          markerId: const MarkerId("My Guess"),
+          markerId: const MarkerId("User Askcent Location"),
           draggable: true,
           visible: true,
           onTap: () {
-            print("Tapped me");
+            // print("Tapped me");
           },
-          infoWindow: const InfoWindow(title: 'Your ASkcent Location'),
+          infoWindow: const InfoWindow(title: 'Your Askcent Location'),
           position: position));
     });
   }
@@ -163,17 +160,21 @@ class UploadScreenState extends State<MapSample> {
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       DocumentReference ref = firestore.collection('user_data').doc(userName);
-
-      ref
-          .set({
-            'user_name': userName,
-            'latitude': current_marker_latlong?.latitude,
-            'longitude': current_marker_latlong?.longitude,
-            'score': 0,
-          }, SetOptions(merge: true))
-          .then((value) => print("Askcent added $userName"))
-          .catchError((error) => print("Failed to update askcent: $error"));
-      return true;
+      if (userName != null) {
+        ref
+            .set({
+              'user_name': userName,
+              'latitude': current_marker_latlong?.latitude,
+              'longitude': current_marker_latlong?.longitude,
+              'score': 0,
+            }, SetOptions(merge: true))
+            .then((value) => print("Askcent added $userName"))
+            .catchError((error) => print("Failed to update askcent: $error"));
+        return true;
+      } else {
+        print("Couldn't add Askcent for user, no username found");
+        return false;
+      }
     }
   }
 
@@ -193,7 +194,6 @@ class UploadScreenState extends State<MapSample> {
     // generate a random index based on the list length
     // and use it to retrieve the element
     var element = all_user_info![_random.nextInt(all_user_info.length)];
-    print(element);
 
     return true;
   }
