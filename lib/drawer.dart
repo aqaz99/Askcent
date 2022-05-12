@@ -37,7 +37,7 @@ class AskcentDrawer extends StatelessWidget {
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const PreviousGamesScreen()));
+                  builder: (context) => PreviousGamesScreen()));
             },
           ),
           ListTile(

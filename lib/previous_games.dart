@@ -1,10 +1,15 @@
+import 'package:askcent/main.dart';
 import 'package:flutter/material.dart';
 
 // Firestore
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+// Google
+import 'package:google_sign_in/google_sign_in.dart';
+
 class PreviousGamesScreen extends StatelessWidget {
-  const PreviousGamesScreen({Key? key}) : super(key: key);
+  PreviousGamesScreen({Key? key}) : super(key: key);
+  final GoogleSignInAccount? _currentUser = MyApp.currentUser;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +24,7 @@ class PreviousGamesScreen extends StatelessWidget {
           iconTheme: const IconThemeData(color: Colors.black),
         ),
         body: FutureBuilder(
-            future: getCollection(),
+            future: getCollection(_currentUser?.displayName),
             builder: (context, AsyncSnapshot snapshot) {
               if (!snapshot.hasData) {
                 return Center(child: CircularProgressIndicator());
@@ -44,13 +49,17 @@ class PreviousGamesScreen extends StatelessWidget {
                                   semanticLabel:
                                       'Text to announce in accessibility modes',
                                 ),
-                                Text(snapshot.data[index]['user_name']),
+                                Text(snapshot.data[index]
+                                    .toString()
+                                    .split("||")[0]),
                                 const Icon(
                                   Icons.emoji_events_rounded,
                                   color: Colors.greenAccent,
                                   size: 34.0,
                                 ),
-                                Text(snapshot.data[index]['score'].toString()),
+                                Text(snapshot.data[index]
+                                    .toString()
+                                    .split("||")[1]),
                               ],
                             ),
                           );
@@ -59,15 +68,27 @@ class PreviousGamesScreen extends StatelessWidget {
             }));
   }
 
-  Future<List<dynamic>?> getCollection() async {
+  Future<List<dynamic>?> getCollection(String? userName) async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    var collection = FirebaseFirestore.instance.collection('user_data');
+    var collection = firestore.collection('previous_games');
 
     try {
-      QuerySnapshot snapshot = await collection.get();
-      List<dynamic> result = snapshot.docs.map((doc) => doc.data()).toList();
-      return result;
+      var snapshot = await collection.doc(userName).get();
+      if (snapshot.exists) {
+        Map<String, dynamic> data = snapshot.data()!;
+        print(data);
+        print("Length: ");
+        print(data.length);
+        List<String> results = [];
+        for (var i = 0; i < data.length; i++) {
+          results.add("${data.keys.elementAt(i)}||${data.values.elementAt(i)}");
+        }
+        //     data.entries.map((value) => value.value).toList();
+        // List<dynamic> result = [];
+        // data.forEach((k, v) => result.add(v));
+        return (results);
+      }
     } catch (error) {
       print(error);
       return null;

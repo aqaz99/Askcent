@@ -62,7 +62,7 @@ class LeaderboardScreen extends StatelessWidget {
   Future<List<dynamic>?> getCollection() async {
     FirebaseFirestore firestore = FirebaseFirestore.instance;
 
-    var collection = FirebaseFirestore.instance.collection('user_data');
+    var collection = firestore.collection('user_data');
 
     try {
       QuerySnapshot snapshot = await collection.get();
