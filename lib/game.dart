@@ -51,6 +51,9 @@ class GameScreenState extends State<MapSample> {
         options: DefaultFirebaseConfig.platformOptions);
     _initialized = true;
     _randomAskcent = await getRandomAskcent();
+    while (_randomAskcent['user_name'] == MyApp.currentUser) {
+      _randomAskcent = await getRandomAskcent();
+    }
   }
 
   final Completer<GoogleMapController> _controller = Completer();
@@ -100,7 +103,8 @@ class GameScreenState extends State<MapSample> {
                   _currentMarkers[0].position.longitude,
                   _randomAskcent['latitude'],
                   _randomAskcent['longitude']);
-              addScoreToUser(_currentUser?.displayName, straightLineDistance);
+              addScoreToUserAndPreviousGames(
+                  _currentUser?.displayName, straightLineDistance);
               showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
@@ -203,8 +207,6 @@ class GameScreenState extends State<MapSample> {
       _polylines.clear();
       _polylines.add(_newLine);
     });
-    // Get random askcent
-    _randomAskcent = await getRandomAskcent();
   }
 
   Future<Map<String, dynamic>> getRandomAskcent() async {
@@ -247,23 +249,40 @@ class GameScreenState extends State<MapSample> {
     return 12742 * asin(sqrt(a));
   }
 
-  void addScoreToUser(String? userName, double distance) async {
+  // This function also resets Askcent
+  void addScoreToUserAndPreviousGames(String? userName, double distance) async {
     if (!_initialized) {
       await initializeDefault();
     }
+    print("User is:");
+    print(userName);
     FirebaseFirestore firestore = FirebaseFirestore.instance;
     // Simple score,
     double score = 10000 - distance;
     DocumentReference ref = firestore.collection('user_data').doc(userName);
-    print("ref is:");
-    print(ref);
-    print("User is:");
-    print(userName);
+    DocumentReference previous_games =
+        firestore.collection('previous_games').doc(userName);
     ref
         .update({
           'score': FieldValue.increment(score.abs().round()),
         })
         .then((value) => print("Askcent added $userName"))
         .catchError((error) => print("Failed to update askcent: $error"));
+
+    // Add to previous games
+    previous_games
+        .set({
+          'vs_${_randomAskcent['user_name']}': score.abs().round(),
+        }, SetOptions(merge: true))
+        .then((value) => print(
+            "Updated score for $userName against ${_randomAskcent['user_name']}"))
+        .catchError((error) => print("Failed to update askcent: $error"));
+
+    // Get random askcent to reset game and prevent user from playing them self
+    _randomAskcent = await getRandomAskcent();
+    while (_randomAskcent['user_name'] == userName) {
+      print("User is the same");
+      _randomAskcent = await getRandomAskcent();
+    }
   }
 }

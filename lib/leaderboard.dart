@@ -73,36 +73,4 @@ class LeaderboardScreen extends StatelessWidget {
       return null;
     }
   }
-
-  /*
-  ListView.builder(
-            itemCount: 5, //list_of_items.length,
-            itemBuilder: (BuildContext ctxt, int index) {
-              return Container(
-                margin: const EdgeInsets.all(15.0),
-                padding: const EdgeInsets.all(6.0),
-                decoration:
-                    BoxDecoration(border: Border.all(color: Colors.black)),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: <Widget>[
-                    const Icon(
-                      Icons.account_circle_outlined,
-                      color: Colors.greenAccent,
-                      size: 34.0,
-                      semanticLabel: 'Text to announce in accessibility modes',
-                    ),
-                    // Text(list_of_users[index]),
-                    const Icon(
-                      Icons.emoji_events_rounded,
-                      color: Colors.greenAccent,
-                      size: 34.0,
-                    ),
-                    // Text(list_of_items[index]),
-                  ],
-                ),
-              );
-            })
-  */
 }
