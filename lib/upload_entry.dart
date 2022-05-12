@@ -4,6 +4,7 @@ import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:askcent/firebase_config.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:askcent/main.dart';
 
 // Add random user to database
 import "dart:math";
@@ -14,14 +15,6 @@ import 'package:audioplayers/audioplayers.dart';
 // Firestore
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // What we are requesting access to for the app
-  scopes: <String>[
-    'email',
-    'profile',
-  ],
-);
 
 class UploadEntryScreen extends StatelessWidget {
   const UploadEntryScreen({Key? key}) : super(key: key);
@@ -46,7 +39,8 @@ class MapSample extends StatefulWidget {
 }
 
 class UploadScreenState extends State<MapSample> {
-  GoogleSignInAccount? _currentUser;
+  final GoogleSignInAccount? _currentUser = MyApp.currentUser;
+
   // Firebase
   bool _initialized = false;
   Future<void> initializeDefault() async {
@@ -59,7 +53,7 @@ class UploadScreenState extends State<MapSample> {
   List<Marker> _currentMarkers = [];
   LatLng? current_marker_latlong;
 
-  final player = new AudioCache(fixedPlayer: AudioPlayer());
+  final player = AudioCache(fixedPlayer: AudioPlayer());
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -73,12 +67,6 @@ class UploadScreenState extends State<MapSample> {
     // FlutterSound flutterSound = new FlutterSound();
     super.initState();
     initializeDefault();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-    });
-    _googleSignIn.signInSilently();
   }
 
   @override

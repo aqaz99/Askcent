@@ -16,6 +16,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
+  static GoogleSignInAccount? currentUser;
   const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
@@ -42,14 +43,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  GoogleSignInAccount? _currentUser;
-
   @override
   void initState() {
     super.initState();
     _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
       setState(() {
-        _currentUser = account;
+        MyApp.currentUser = account;
       });
     });
     _googleSignIn.signInSilently();
@@ -67,8 +66,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
   // Taken from Dixon's exampls Mar 28 video
   Widget _buildBody() {
-    final GoogleSignInAccount? user = _currentUser;
-    if (user != null) {
+    if (MyApp.currentUser != null) {
       return Row(
         children: <Widget>[
           ElevatedButton(
@@ -105,7 +103,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
             actions: [_buildBody()],
             iconTheme: const IconThemeData(color: Colors.black)),
-        drawer: const AskcentDrawer(),
+        drawer: AskcentDrawer(),
         body: Center(
           child: Column(
             // mainAxisAlignment: MainAxisAlignment.center,

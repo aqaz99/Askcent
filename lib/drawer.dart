@@ -1,11 +1,8 @@
-// import 'package:assignment4/map_page.dart';
-import 'package:askcent/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:askcent/upload_entry.dart';
 import 'package:askcent/previous_games.dart';
 import 'package:askcent/game.dart';
 import 'package:askcent/leaderboard.dart';
-import 'package:askcent/main.dart';
 
 // Navigator.pop(context); // Close drawer
 class AskcentDrawer extends StatelessWidget {
@@ -31,8 +28,8 @@ class AskcentDrawer extends StatelessWidget {
             title: const Text('Play Askcent'),
             onTap: () {
               // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const GameScreen()));
+              Navigator.of(context)
+                  .push(MaterialPageRoute(builder: (context) => GameScreen()));
             },
           ),
           ListTile(
@@ -61,15 +58,7 @@ class AskcentDrawer extends StatelessWidget {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: (context) => const LeaderboardScreen()));
             },
-          ),
-          ListTile(
-            title: const Text('Settings'),
-            onTap: () {
-              // Navigator.of(context).popUntil((route) => route.isFirst);
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const SettingsScreen()));
-            },
-          ),
+          )
         ],
       ),
     );

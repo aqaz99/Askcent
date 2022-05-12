@@ -1,3 +1,4 @@
+import 'package:askcent/main.dart';
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
@@ -14,14 +15,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 // Get random user
 import "dart:math";
-
-GoogleSignIn _googleSignIn = GoogleSignIn(
-  // What we are requesting access to for the app
-  scopes: <String>[
-    'email',
-    'profile',
-  ],
-);
 
 class GameScreen extends StatelessWidget {
   const GameScreen({Key? key}) : super(key: key);
@@ -47,7 +40,7 @@ class MapSample extends StatefulWidget {
 
 class GameScreenState extends State<MapSample> {
   // Google user stuff
-  GoogleSignInAccount? _currentUser;
+  final GoogleSignInAccount? _currentUser = MyApp.currentUser;
 
   // Firebase
   bool _initialized = false;
@@ -61,13 +54,12 @@ class GameScreenState extends State<MapSample> {
   }
 
   final Completer<GoogleMapController> _controller = Completer();
-  List<Marker> _currentMarkers = [];
-  late Marker _markerGuess;
+  final List<Marker> _currentMarkers = [];
 
   // Poly line info and init
-  Set<Polyline> _polylines = <Polyline>{};
+  final Set<Polyline> _polylines = <Polyline>{};
 
-  final player = new AudioCache(fixedPlayer: AudioPlayer());
+  final player = AudioCache(fixedPlayer: AudioPlayer());
 
   static const CameraPosition _kGooglePlex = CameraPosition(
     target: LatLng(37.42796133580664, -122.085749655962),
@@ -81,12 +73,6 @@ class GameScreenState extends State<MapSample> {
   void initState() {
     super.initState();
     initializeDefault();
-    _googleSignIn.onCurrentUserChanged.listen((GoogleSignInAccount? account) {
-      setState(() {
-        _currentUser = account;
-      });
-    });
-    _googleSignIn.signInSilently();
   }
 
   @override
