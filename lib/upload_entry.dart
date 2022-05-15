@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:geolocator/geolocator.dart';
@@ -87,7 +89,6 @@ class UploadScreenState extends State<MapSample> {
               textStyle: const TextStyle(fontSize: 20),
             ),
             onPressed: () {
-              print("User uploaded askcent");
               writeAskcent(_currentUser?.displayName);
             },
             child: const Text('Submit Askcent!'),
@@ -103,14 +104,14 @@ class UploadScreenState extends State<MapSample> {
           },
           onTap: (latLng) {
             setState(() {
-              print('${latLng.latitude}, ${latLng.longitude}');
+              // print('${latLng.latitude}, ${latLng.longitude}');
               _addMarker(latLng);
             });
           }),
       floatingActionButton: FloatingActionButton.extended(
-        onPressed: _playVoice,
+        onPressed: (() {}),
         label: const Text('Press to record your audio'),
-        icon: const Icon(Icons.volume_up_outlined),
+        icon: const Icon(Icons.mic),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.startDocked,
     );
@@ -145,6 +146,7 @@ class UploadScreenState extends State<MapSample> {
       if (!_initialized) {
         await initializeDefault();
       }
+
       FirebaseFirestore firestore = FirebaseFirestore.instance;
 
       DocumentReference ref = firestore.collection('user_data').doc(userName);
@@ -160,7 +162,7 @@ class UploadScreenState extends State<MapSample> {
             .catchError((error) => print("Failed to update askcent: $error"));
         return true;
       } else {
-        print("Couldn't add Askcent for user, no username found");
+        // print("Couldn't add Askcent for user, no username found");
         return false;
       }
     }
@@ -192,7 +194,7 @@ class UploadScreenState extends State<MapSample> {
       List<dynamic> result = snapshot.docs.map((doc) => doc.data()).toList();
       return result;
     } catch (error) {
-      print(error);
+      // print(error);
       return null;
     }
   }
